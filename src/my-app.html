@@ -75,10 +75,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer>
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="all" href="/all">All</a>
-          <a name="friends" href="/friends">Friends</a>
-          <a name="kids" href="/kids">Kids</a>
+          <a name="all-line" href="/all-line">Alle tweats</a>
+          <a name="sport-line" href="/sport-line">Sport tweats</a>
+          <a name="friends-line" href="/friends-line">Vrienden tweats</a>
+          <a name="kids-line" href="/kids-line">Kids tweats</a>
           <a name="my-profile" href="/my-profile">My Profile</a>
+          <a name="search-for" href="/search-for">Search for</a>
         </iron-selector>
       </app-drawer>
 
@@ -93,9 +95,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </app-header>
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-          <all name="all"></all>
-          <friends name="friends"></friends>
-          <kids name="kids"></kids>
+          <all-line name="all-line"></all-line>
+          <sport-line name="sport-line"></sport-line>
+          <friends-line name="friends-line"></friends-line>
+          <kids-line name="kids-line"></kids-line>
           <my-profile name="my-profile"></my-profile>
         </iron-pages>
 
@@ -126,13 +129,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _routePageChanged: function(page) {
-        this.page = page || 'view1';
+        this.page = page || 'all-line';
       },
 
       _pageChanged: function(page) {
         // load page import on demand.
         this.importHref(
-          this.resolveUrl('my-' + page + '.html'), null, null, true);
+          this.resolveUrl(page + '.html'), null, null, true);
+        console.log (page);
       }
 
     });
