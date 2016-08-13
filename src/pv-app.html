@@ -1,0 +1,201 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<!-- NEON elements-->
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+
+
+
+
+<link rel="import" href="my-icons.html">
+
+<dom-module id="pv-app">
+
+    <template>
+
+        <style>
+
+            :host {
+                display: block;
+                --app-primary-color: #4285f4;
+                --app-secondary-color: black;
+            }
+
+            app-header {
+                background-color: var(--app-primary-color);
+                color: #fff;
+            }
+
+            app-header paper-icon-button {
+                --paper-icon-button-ink-color: white;
+            }
+
+            .drawer-list {
+                margin: 0 20px;
+            }
+
+            .drawer-list a {
+                display: block;
+                padding: 0 16px;
+                line-height: 40px;
+                text-decoration: none;
+                color: var(--app-secondary-color);
+            }
+
+            .drawer-list a.iron-selected {
+                color: black;
+                font-weight: bold;
+            }
+
+            .drawer-list a.subroute {
+                padding-left: 32px;
+            }
+
+            paper-card {
+                --paper-card-header-color: black;
+                background-color: #999999;
+            }
+
+            .paper-topic-image {
+                width: 350px;
+                height: 400px;
+            }
+
+
+        </style>
+
+        <app-location route="{{route}}"></app-location>
+        <app-route
+                route="{{route}}"
+                pattern="/:page"
+                data="{{routeData}}"
+                tail="{{subroute}}"></app-route>
+
+        <app-drawer-layout fullbleed>
+
+            <!-- Drawer content -->
+            <app-drawer>
+                <app-toolbar>Menu</app-toolbar>
+                <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+                    <a name="all-line" href="/all-line">Alle tweats</a>
+                    <a name="sport-line" href="/sport-line">Sport tweats</a>
+                    <a name="friends-line" href="/friends-line">Vrienden tweats</a>
+                    <a name="kids-line" href="/kids-line">Kids tweats</a>
+                    <a name="my-profile" href="/my-profile">My Profile</a>
+                    <a name="search-for" href="/search-for">Search for</a>
+                </iron-selector>
+            </app-drawer>
+
+            <!-- Main content -->
+            <app-header-layout has-scrolling-region>
+
+                <app-header condenses reveals effects="waterfall">
+                    <app-toolbar>
+                        <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+                        <div title>Paardenvriendjes</div>
+                    </app-toolbar>
+                </app-header>
+
+                <!--<iron-pages role="main" selected="[[page]]" attr-for-selected="name">-->
+                <!--<all-line name="all-line"></all-line>-->
+                <!--<sport-line name="sport-line"></sport-line>-->
+                <!--<friends-line name="friends-line"></friends-line>-->
+                <!--<kids-line name="kids-line"></kids-line>-->
+                <!--<my-profile name="my-profile"></my-profile>-->
+                <!--</iron-pages>-->
+
+                <paper-card heading="Alle Tweats">
+                    <img class="paper-topic-image" src="../images/main_images/horse%20350_400.png" alt="horse">
+                </paper-card>
+                <paper-card heading="Sport Tweats">
+                    <img class="paper-topic-image" src="../images/main_images/event.png" alt="horse">
+                </paper-card>
+                <paper-card heading="Vrienden Tweats">
+                    <img class="paper-topic-image" src="../images/main_images/friends.jpg" alt="horse">
+                </paper-card>
+                <paper-card heading="Kids Tweats">
+                    <img class="paper-topic-image" src="../images/main_images/ruiter_350_400.png" alt="horse">
+                </paper-card>
+            </app-header-layout>
+        </app-drawer-layout>
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is: 'pv-app',
+
+            properties: {
+
+                page: {
+                    type: String,
+                    reflectToAttribute: true,
+                    observer: '_pageChanged'
+                },
+                animationConfig: {
+                    value: function () {
+                        return {
+                            'entry': [{
+                                // provided by neon-animation/animations/fade-in-animation.html
+                                name: 'fade-in-animation',
+                                node: this,
+                                timing: {delay: 50}
+                            },
+                                {
+                                    // provided by neon-animation/animations/transform-animation.html
+                                    name: 'transform-animation',
+                                    transformFrom: 'translateX(-100vh)',
+                                    node: this
+                                }]
+                        }
+                    }
+                }
+            },
+
+            behaviors: [
+                Polymer.NeonAnimationRunnerBehavior
+            ],
+            attached: function () {
+                console.log(this.localName + '#' + this.id + ' has local DOM initialized');
+                this.playAnimation('entry');
+            },
+            observers: [
+                '_routePageChanged(routeData.page)'
+            ],
+
+            _routePageChanged: function (page) {
+                this.page = page || 'all-line';
+            },
+
+            _pageChanged: function (page) {
+                // load page import on demand.
+                this.importHref(
+                        this.resolveUrl(page + '.html'), null, null, true);
+                console.log(page);
+            }
+
+        });
+
+    </script>
+
+</dom-module>
